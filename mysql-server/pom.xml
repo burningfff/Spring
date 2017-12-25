@@ -62,6 +62,19 @@
             <artifactId>spring-boot-test</artifactId>
             <version>1.5.1.RELEASE</version>
         </dependency>
+        <!-- redis cache related.....start -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.6.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+        <!-- redis cache related.....end -->
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

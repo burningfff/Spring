@@ -7,6 +7,7 @@ import com.hisense.sql.dao.UserDao;
 import com.hisense.sql.entity.JsonResult;
 import com.hisense.sql.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class UserServices {
 
 //    @Transactional(rollbackFor = {IllegalArgumentException.class})
     @Transactional()
+
     public JsonResult add(User user){
 
         System.out.println("添加开始");
