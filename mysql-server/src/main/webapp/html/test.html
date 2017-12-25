@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ElementDemo</title>
+
+    <link rel="stylesheet" href="../element-ui/lib/theme-default/index.css">
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/json2.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/vue-resource.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+
+    <style>
+        .el-select .el-input {
+            width: 110px;
+        }
+
+        .el-table .info-row {
+            background: #c9e5f5;
+        }
+
+        #top {
+            background:#20A0FF;
+            padding:5px;
+            overflow:hidden
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="app">
+    <!-- Table -->
+    <el-button type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
+
+    <el-dialog title="收货地址" v-model="dialogTableVisible">
+        <el-table :data="gridData">
+            <el-table-column property="date" label="日期" width="150"></el-table-column>
+            <el-table-column property="name" label="姓名" width="200"></el-table-column>
+            <el-table-column property="address" label="地址"></el-table-column>
+        </el-table>
+    </el-dialog>
+
+    <!-- Form -->
+    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+
+    <el-dialog title="收货地址" v-model="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="活动名称" :label-width="formLabelWidth">
+                <el-input v-model="form.name" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="活动区域" :label-width="formLabelWidth">
+                <el-select v-model="form.region" placeholder="请选择活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script>
+    var vue = new Vue({
+        el:"#app",
+        data: {
+            gridData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }],
+            dialogTableVisible: false,
+            dialogFormVisible: false,
+            form: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+            },
+            formLabelWidth: '120px'
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

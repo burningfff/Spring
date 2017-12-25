@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="eureka-server" />
+        <module name="gateway-server" />
+        <module name="hello-feign" />
+        <module name="hello-ribbion" />
+        <module name="hello-server" />
+        <module name="hello-server1" />
+        <module name="mysql-feign-server" />
+        <module name="mysql-server" />
+        <module name="sql-server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.hisense" target="1.6" />
+      <module name="eureka-server" target="1.8" />
+      <module name="gateway-server" target="1.6" />
+      <module name="hello-feign" target="1.6" />
+      <module name="hello-ribbion" target="1.6" />
+      <module name="hello-server" target="1.6" />
+      <module name="hello-server1" target="1.6" />
+      <module name="mysql-feign-server" target="1.6" />
+      <module name="mysql-server" target="1.6" />
+      <module name="sql-server" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

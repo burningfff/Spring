@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.hisense.sql.dao.UserDao">
+    <!-- 所有列-->
+    <sql id="Column_list">
+        userCode,
+        age,
+        phone,
+        modifiedTime
+    </sql>
+
+    <resultMap id="ListTest" type="com.hisense.sql.domain.TestPOJO" >
+        <result  column="userId" property="userId" />
+        <result column="userCode" property="userCode" />
+        <result column="age" property="age" />
+        <result column="mail" property="mail" />
+        <result column="phone" property="phone" />
+        <result column="groupId" property="groupId" />
+        <result column="createTime" property="createTime" />
+        <result column="createBy" property="createBy" />
+        <result column="modifiedTime" property="modifiedTime" />
+        <result column="modifiedBy" property="modifiedBy" />
+    </resultMap>
+
+    <!-- 所有列
+    <sql id="Column_list">
+        userId,
+        userCode,
+        age,
+        mail,
+        phone,
+        groupId,
+        createTime,
+        createBy,
+        modifiedTime,
+        modifiedBy
+    </sql>-->
+    <!-- 根据ID查询数据-->
+    <select id="get" parameterType="int" resultMap="ListTest">
+        SELECT * FROM user WHERE age = #{age}
+    </select>
+
+    <!-- 增加数据 -->
+    <insert id="insertUser" parameterType="com.hisense.sql.domain.TestPOJO" >
+
+        insert into user(userId,userCode,age,mail,phone,groupId,
+                         createTime,createBy,modifiedTime,modifiedBy)
+        values (#{userId,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+                #{mail,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 根据userId删除数据 -->
+    <delete id="deletdUserById" parameterType="java.lang.String" >
+        delete from user where useId = #{useId,jdbcType=VARCHAR}
+    </delete>
+    <!-- 根据userCode删除数据 -->
+    <delete id="deletdUserByCode" parameterType="java.lang.String" >
+        delete from user where userCode = #{userCode,jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="updateUser" parameterType="com.hisense.sql.domain.TestPOJO" >
+        update user set userId=#{userId,jdbcType=VARCHAR},
+            userCode=#{userCode,jdbcType=VARCHAR},
+            age=#{age,jdbcType=INTEGER},
+            mail=#{mail,jdbcType=VARCHAR},
+            phone=#{phone,jdbcType=VARCHAR},
+            groupId=#{groupId,jdbcType=INTEGER},
+            createTime=#{createTime,jdbcType=TIMESTAMP},
+            createBy=#{createBy,jdbcType=VARCHAR},
+            modifiedTime=#{modifiedTime,jdbcType=TIMESTAMP},
+            modifiedBy=#{modifiedBy,jdbcType=VARCHAR}
+        where userId=#{userId,jdbcType=VARCHAR}
+
+    </update>
+
+    <!-- <include refid="Column_List" />-->
+    <!-- 根据userCode查找数据 -->
+    <select id="getUserByCode" parameterType="java.lang.String" resultMap="ListTest">
+        select * from user
+        WHERE userCode = #{userCode,jdbcType=VARCHAR}
+    </select>
+    <!-- 根据userId查找数据 -->
+    <select id="getUserById" parameterType="java.lang.String" resultMap="ListTest">
+        select * from user
+        WHERE userId = #{userId,jdbcType=VARCHAR}
+    </select>
+
+<!-- 对UserCode、age、phone和修改时间展示，按照修改时间排序，支持分页 -->
+    <select id="getUserList" resultType="com.hisense.sql.domain.TestPOJO">
+        select
+        <include refid="Column_list" />
+        from user ORDER BY modifiedTime DESC
+    </select>
+
+</mapper>

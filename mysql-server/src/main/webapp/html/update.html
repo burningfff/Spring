@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>更新</title>
+    <link rel="stylesheet" href="../element-ui/lib/theme-default/index.css">
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/json2.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/vue-resource.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+
+    <style>
+        .el-select .el-input {
+            width: 110px;
+        }
+
+        .el-table .info-row {
+            background: #c9e5f5;
+        }
+
+        .top {
+            background:#20A0FF;
+            padding:5px;
+            overflow:hidden;
+            height:20px;
+        }
+        .down {
+            background:#20A0FF;
+            padding:5px;
+            overflow:hidden;
+            height:20px;
+            margin-top: 80px;
+        }
+        a{
+            text-decoration-line: none;/*无下划线*/
+            color: #ffffff;
+        }
+        #center {
+            display:table;
+            margin:0 auto;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="test">
+
+
+    <div class="top">
+    </div>
+
+    <br/>
+
+    <div style="margin-top:15px" id="center">
+        <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="用户编码" >
+                <el-input v-model="form.userCode" disabled="true" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="分组">
+                <el-select v-model="form.groupId" placeholder="研发，运营，维护" size="large">
+                    <el-option label="研发" value="0"></el-option>
+                    <el-option label="运营" value="1"></el-option>
+                    <el-option label="维护" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="电话">
+                <el-input v-model="form.phone" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+                <el-input v-model="form.mail" style="width: 330px;"></el-input>            </el-form-item>
+            <el-form-item label="年龄">
+                <el-input v-model="form.age" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="创建人">
+                <el-input v-model="form.createBy" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">立即添加</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </div>
+</div>
+<div class="down">
+</div>
+<footer align="center">
+    <p>&copy; 疯人愿的疯言疯语 </p>
+</footer>
+
+<script>
+
+    var vue = new Vue({
+        el:"#test",
+        data: {
+            form: {
+                name: '',
+                groupId: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+            }
+        },
+        methods: {
+            onSubmit:function(){
+                this.$alert(this.form.groupId);
+            }
+        }
+        /*data: {
+            //表格当前页数据
+            tableData: [],
+
+            //多选数组
+            multipleSelection: [],
+
+            //请求的URL
+            url:'http://127.0.0.1:2230/getinfo',
+
+            //搜索条件
+            criteria: '',
+
+            //下拉菜单选项
+            select: '',
+
+            //默认每页数据量
+            pagesize: 10,
+
+            //默认高亮行数据id
+            highlightId: -1,
+
+            //当前页码
+            currentPage: 1,
+
+            //查询的页码
+            start: 1,
+
+            //默认数据总数
+            totalCount: 1000,
+        },
+
+        methods: {
+
+            //从服务器读取数据
+            loadData: function(select,criteria, pageNum, pageSize){
+                this.$http.get(this.url,{select:select,parameter:criteria, pageNum:pageNum, pageSize:pageSize}).then(function(res){
+                    this.tableData = res.data.data;
+                    this.totalCount = res.data.total;
+                },function(){
+                    console.log('failed');
+                });
+            },
+
+            //多选响应
+            handleSelectionChange: function(val) {
+                this.multipleSelection = val;
+            },
+
+            //点击行响应
+            handleclick: function(row, event, column){
+//			    	this.highlightId = row.id;
+            },
+
+            //编辑
+            handleDetail: function(index, row) {
+
+            },
+
+            //编辑
+            handleEdit: function(index, row) {
+                this.$prompt('请输入新名称', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    if(value==''||value==null)
+                return;
+                this.$http.post('../update',{"id":row.id,"name":value},{emulateJSON: true}).then(function(res){
+                    this.loadData(this.criteria, this.currentPage, this.pagesize);
+                },function(){
+                    console.log('failed');
+                });
+            }).catch(() => {
+
+                });
+            },
+
+
+            //单行删除
+            handleDelete: function(index, row) {
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() =>{
+
+                    var array = [];
+                array.push(row.id);
+                this.$http.post('http://127.0.0.1:2230/delete',{"userCode":row.userCode},{emulateJSON: true}).then(function(res){
+                    this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+                },function(){
+                    console.log('failed');
+                });
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                });
+            }).catch (()=>{
+                    this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+            },
+
+            //搜索
+            search: function(){
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+            //添加
+            add: function(){
+
+
+                /!*this.$prompt('请输入名称', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    if(value==''||value==null)
+                        return;
+                    this.$http.post('../add',{"name":value},{emulateJSON: true}).then(function(res){
+                        this.loadData(this.criteria, this.currentPage, this.pagesize);
+                    },function(){
+                        console.log('failed');
+                    });
+                }).catch(() => {
+
+            });*!/
+
+            },
+
+            //多项删除
+            /!*deletenames: function(){
+                if(this.multipleSelection.length==0)
+                    return;
+                var array = [];
+                this.multipleSelection.forEach((item) => {
+                    array.push(item.id);
+                })
+                this.$http.post('../delete',{"array":array},{emulateJSON: true}).then(function(res){
+                    this.loadData(this.criteria, this.currentPage, this.pagesize);
+                },function(){
+                    console.log('failed');
+                });
+            },*!/
+
+            //改变当前点击的行的class，高亮当前行
+            tableRowClassName: function(row, index){
+                if(row.id == this.highlightId)
+                {
+                    return 'info-row';
+                }
+            },
+
+            //每页显示数据量变更
+            handleSizeChange: function(val) {
+                this.pagesize = val;
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+            //页码变更
+            handleCurrentChange: function(val) {
+                this.currentPage = val;
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+        },*/
+
+
+    });
+
+    //载入数据
+    vue.loadData(vue.select,vue.criteria, vue.currentPage, vue.pagesize);
+</script>
+
+</body>
+</html>

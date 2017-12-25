@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: eureka-service
+server:
+  port: 1111
+security:
+  basic:
+    enabled: false
+#注册中心客户端
+eureka:
+  instance:
+#    hostname: localhost
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false #通过eureka.client.registerWithEureka：false
+    fetch-registry: false #和fetchRegistry：false来表明自己是一个eureka server.
+    serviceUrl:
+      defaultZone: http://127.0.0.1:1111/eureka
+
+#服务跟踪
+#  zipkin:
+#    base-url: http://10.16.8.97:9411
+#  sleuth:
+#    sampler:
+#      percentage: 0.1
+#端点
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+  restart:
+    enabled: true
+    sensitive: false
+  trace:
+    enabled: true
+    sensitive: false
+  dump:
+    enabled: true
+    sensitive: false
+  metrics:
+    enabled: true
+    sensitive: false
+  env:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+  logfile:
+    enabled: true
+    sensitive: false
+  configprops:
+    enabled: true
+    sensitive: false
+#日志级别
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: INFO

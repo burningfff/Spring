@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: saasp-configctr
+
+server:
+  port: 1111
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: peer1
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 3000
+  client:
+    serviceUrl:
+      defaultZone: http://10.16.8.94:1111/eureka/
+
+endpoints:
+  shutdown:
+    enabled: true
+
+
+
+

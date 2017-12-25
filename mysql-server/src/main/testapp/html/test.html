@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ElementDemo</title>
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/json2.js"></script>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/vue@2.5.3/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-resource@1.3.4/dist/vue-resource.min.js"></script>
+
+    <style>
+        .el-select .el-input {
+            width: 110px;
+        }
+
+        .el-table .info-row {
+            background: #c9e5f5;
+        }
+
+        #top {
+            background:#20A0FF;
+            padding:5px;
+            overflow:hidden
+        }
+        a{
+            text-decoration-line: none;/*无下划线*/
+            color: #ffffff;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="test">
+
+    <div id="top">
+			<span style="float: right">
+				<a href="add.html" style="color:white;margin-right:20px">添加</a>
+                <!--<el-button type="text" @click="dialogFormVisible = true" style="color:white;margin-right:20px">添加</el-button>-->
+                <!--<el-button type="text" @click="deletenames" style="color:white">批量删除</el-button>-->
+			</span>
+    </div>
+
+
+    <br/>
+
+    <!--详情的带表格对话框-->
+    <el-dialog title="详情" v-model="dialogTableVisible" :before-close="handleClose">
+        <el-table :data="gridData">
+            <el-table-column property="d_userCode" label="编码" width="200"></el-table-column>
+            <el-table-column property="d_age" label="年龄" width="100"></el-table-column>
+            <el-table-column property="d_mail" label="邮箱" width="200"></el-table-column>
+            <el-table-column property="d_phone" label="电话" width="100"></el-table-column>
+            <el-table-column property="d_createBy" label="创建人" width="100"></el-table-column>
+            <el-table-column property="d_createTime" label="创建时间" width="200"></el-table-column>
+            <el-table-column property="d_modifiedBy" label="修改人" width="100"></el-table-column>
+            <el-table-column property="d_modifiedTime" label="修改时间" width="200"></el-table-column>
+        </el-table>
+    </el-dialog>
+
+    <!--更新的带表单对话框-->
+    <el-dialog  title="更新" v-model="dialogFormVisible" :before-close='handleClose'>
+        <el-form :model="form" label-width="100px" :rules="rules1" ref="form">
+            <!--<el-form-item label="用户编码" >
+                <el-input v-model="form.userCode" disabled="true" style="width: 330px;"></el-input>
+            </el-form-item>-->
+            <el-form-item label="分组">
+                <el-select v-model="form.groupId" placeholder="研发，运营，维护" >
+                    <el-option label="研发" value="0"></el-option>
+                    <el-option label="运营" value="1"></el-option>
+                    <el-option label="维护" value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="电话" prop="phone">
+                <el-input v-model="form.phone" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="mail">
+                <el-input v-model="form.mail" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄" prop="age">
+                <el-input v-model="form.age" style="width: 330px;"></el-input>
+            </el-form-item>
+            <el-form-item label="修改人" prop="modifiedBy">
+                <el-input v-model="form.modifiedBy" style="width: 330px;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="callOf('dialoglist')">取 消</el-button>
+            <el-button type="primary" @click="handleEdit()">更 新</el-button>
+        </div>
+    </el-dialog>
+
+    <div style="margin-top:15px">
+        <el-input placeholder="请输入内容" v-model="criteria" style="padding-bottom:10px;">
+            <el-select v-model="select" slot="prepend" placeholder="请选择">
+                <el-option label="userCode" value="1"></el-option>
+                <el-option label="age" value="2"></el-option>
+                <el-option label="mail" value="3"></el-option>
+                <el-option label="phone" value="4"></el-option>
+            </el-select>
+            <el-button slot="append" icon="search" v-on:click="search"></el-button>
+        </el-input>
+
+        <el-table
+                ref="testTable"
+                :data="tableData"
+                style="width:100%"
+                border
+                :default-sort = "{prop: 'group', order: 'ascending'}"
+                @selection-change="handleSelectionChange"
+                @row-click="handleclick"
+                :row-class-name = "tableRowClassName"
+        >
+            <el-table-column
+                    type="selection"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="userCode"
+                    label="编码"
+                    sortable
+                    width="200"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="age"
+                    label="年龄"
+                    width="100"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="phone"
+                    label="电话"
+                    sortable
+                    width="180"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="mail"
+                    label="邮箱"
+                    width="250"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="groupId"
+                    label="组信息"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="modifiedTime"
+                    width="180"
+                    label="创建时间"
+                    sortable>
+            </el-table-column>
+            <el-table-column label="操作" width="300">
+                <template scope="scope">
+                    <el-button
+                            size="small"
+                            type="info"
+                            @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+                    <el-button
+                            size="small"
+                            type="primary"
+                            @click="currentRow(scope.$index, scope.row)">编辑</el-button>
+                    <el-button
+                            size="small"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <div align="center">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pagesize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount">
+            </el-pagination>
+        </div>
+    </div>
+</div>
+
+<footer align="center">
+    <p>&copy; Spring Boot Demo</p>
+</footer>
+
+<script>
+
+    var vue = new Vue({
+        el:"#test",
+
+        data: {
+            rules1: {
+                modifiedBy:[
+                    { required: true, message: '请输入修改人', trigger: 'blur' },
+                    { min: 6, max: 12, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+                ],
+                phone:[
+                    { required: true, message: '请输入电话', trigger: 'blur' },
+                    { min: 11, max: 11, message: '长度为11 个字符', trigger: 'blur' }
+                ],
+                age:[
+                    { required: true, message: '请输入age', trigger: 'blur' },
+                    { type: 'number', message: '年龄必须为数字值'},
+                    { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码' }
+                ],
+                mail:[
+                    { required: true, message: '请输入mail', trigger: 'blur' },
+                    { pattern: /[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\.[a-za-z]{2,4}/, message: '邮箱格式错误' }
+                ]
+            },
+            gridData: [{
+                d_userId:'',
+                d_userCode: '',
+                d_age: '',
+                d_mail: '',
+                d_phone: '',
+                d_groupId: '',
+                d_createTime:'',
+                d_createBy: '',
+                d_modifiedTime:'',
+                d_modifiedBy: '',
+            }],
+            dialogTableVisible: false,
+            dialogFormVisible: false,
+            form: {
+                userId:'',
+                userCode: '',
+                age: '',
+                mail: '',
+                phone: '',
+                groupId: '',
+                createTime:'',
+                createBy: '',
+                modifiedTime:'',
+                modifiedBy: '',
+            },
+            formLabelWidth: '120px',
+
+            <!--此处是分界线-->
+            //表格当前页数据
+            tableData: [],
+
+            //多选数组
+            multipleSelection: [],
+
+            //请求的URL
+            url:'http://127.0.0.1:2230/getinfo',
+
+            //搜索条件
+            criteria: '',
+
+            //下拉菜单选项
+            select: '',
+
+            //默认每页数据量
+            pagesize: 10,
+
+            //默认高亮行数据id
+            highlightId: -1,
+
+            //当前页码
+            currentPage: 1,
+
+            //查询的页码
+            start: 1,
+
+            //默认数据总数
+            totalCount: 1000,
+
+            //当前行的id
+            currentId:'',
+
+            //当前行的userCode
+            currentCode:'',
+        },
+
+        methods: {
+
+            //从服务器读取数据
+            loadData: function(select,criteria, pageNum, pageSize){
+                this.$http.get(this.url,{select:select,parameter:criteria, pageNum:pageNum, pageSize:pageSize}).then(function(res){
+                    this.tableData = res.data.data;
+                    this.totalCount = res.data.total;
+                },function(){
+                    console.log('failed');
+                });
+            },
+            callOf:function(formName){
+                this.creatGroup = false;
+                this.$refs[formName].resetFields();
+                this.dialogFormVisible=false;
+                location.reload();
+            },
+            handleClose(done){
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                    done();
+                location.reload();
+            })
+            .catch(_ => {
+
+                });
+            },
+            //多选响应
+            handleSelectionChange: function(val) {
+                this.multipleSelection = val;
+            },
+
+            //点击行响应
+            handleclick: function(row, event, column){
+//			    	this.highlightId = row.id;
+            },
+
+            //详情
+            handleDetail: function(index, row) {
+                this.gridData[0].d_userCode=row.userCode;
+                this.gridData[0].d_age=row.age;
+                this.gridData[0].d_mail=row.mail;
+                this.gridData[0].d_phone=row.mail;
+                this.gridData[0].d_createBy=row.createBy;
+                this.gridData[0].d_createTime=row.createTime;
+                this.gridData[0].d_modifiedBy=row.modifiedBy;
+                this.gridData[0].d_modifiedTime=row.modifiedTime;
+
+                this.dialogTableVisible = true;
+            },
+            currentRow: function (index, row) {
+
+                this.currentId=row.userId;
+                this.currentCode=row.userCode;
+                this.dialogFormVisible = true;
+            },
+            //编辑
+            handleEdit: function() {
+                this.$alert(this.form.userCode+"+++"+this.form.modifiedBy);
+                this.$http.post('http://127.0.0.1:2230/update'
+                    ,{"userId":this.currentId,"userCode":this.currentCode,"age":this.form.age,
+                        "mail":this.form.mail,"phone":this.form.phone,"groupId":this.form.groupId,
+                        "createTime":this.form.createTime,"createBy":this.form.createBy,"modifiedTime":this.form.modifiedTime,"modifiedBy":this.form.modifiedBy}
+                    ,{headers: {
+                        'Content-Type': 'application/json'}}
+                    ,{emulateJSON: false}).then(function(res){
+                    this.$alert("更新成功");
+                },function(){
+                    this.$alert("更新失败");
+                });
+                this.dialogFormVisible=false;
+            },
+
+
+            //单行删除
+            handleDelete: function(index, row) {
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() =>{
+
+                    var array = [];
+                array.push(row.id);
+                this.$http.post('http://127.0.0.1:2230/delete',{"userCode":row.userCode},{emulateJSON: true}).then(function(res){
+                    this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+                },function(){
+                    console.log('failed');
+                });
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                });
+            }).catch (()=>{
+                    this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+            },
+
+            //搜索
+            search: function(){
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+            //添加
+            add: function(){
+
+
+                /*this.$prompt('请输入名称', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    if(value==''||value==null)
+                        return;
+                    this.$http.post('../add',{"name":value},{emulateJSON: true}).then(function(res){
+                        this.loadData(this.criteria, this.currentPage, this.pagesize);
+                    },function(){
+                        console.log('failed');
+                    });
+                }).catch(() => {
+
+            });*/
+
+            },
+
+            //多项删除
+            /*deletenames: function(){
+                if(this.multipleSelection.length==0)
+                    return;
+                var array = [];
+                this.multipleSelection.forEach((item) => {
+                    array.push(item.id);
+                })
+                this.$http.post('../delete',{"array":array},{emulateJSON: true}).then(function(res){
+                    this.loadData(this.criteria, this.currentPage, this.pagesize);
+                },function(){
+                    console.log('failed');
+                });
+            },*/
+
+            //改变当前点击的行的class，高亮当前行
+            tableRowClassName: function(row, index){
+                if(row.id == this.highlightId)
+                {
+                    return 'info-row';
+                }
+            },
+
+            //每页显示数据量变更
+            handleSizeChange: function(val) {
+                this.pagesize = val;
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+            //页码变更
+            handleCurrentChange: function(val) {
+                this.currentPage = val;
+                this.loadData(this.select,this.criteria, this.currentPage, this.pagesize);
+            },
+
+        },
+
+
+    });
+
+    //载入数据
+    vue.loadData(vue.select,vue.criteria, vue.currentPage, vue.pagesize);
+</script>
+
+</body>
+</html>

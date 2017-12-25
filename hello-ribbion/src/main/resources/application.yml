@@ -1,0 +1,74 @@
+server:
+  port: 2224
+spring:
+  application:
+    name: ribbon-service
+  #服务跟踪
+#  zipkin:
+#    enabled: true
+#    base-url: http://10.16.8.97:9411
+#  sleuth:
+#    sampler:
+#      percentage: 1.0
+
+info:
+ app:
+  name: spring-boot-hello
+  version: v1.0.0
+
+#hello-server:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+            defaultZone: http://127.0.0.1:1111/eureka/
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+  restart:
+    enabled: true
+    sensitive: false
+  trace:
+    enabled: true
+    sensitive: false
+  dump:
+    enabled: true
+    sensitive: false
+  metrics:
+    enabled: true
+    sensitive: false
+  env:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+  logfile:
+    enabled: true
+    sensitive: false
+  configprops:
+    enabled: true
+    sensitive: false
+
+security:
+  basic:
+    enabled: false
+management:
+  security:
+    enabled: false
+
+
+
+
+
+
+
+
+

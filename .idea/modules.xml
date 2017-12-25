@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/com.hisense.iml" filepath="$PROJECT_DIR$/com.hisense.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway-server/gateway-server.iml" filepath="$PROJECT_DIR$/gateway-server/gateway-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-feign/hello-feign.iml" filepath="$PROJECT_DIR$/hello-feign/hello-feign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-ribbion/hello-ribbion.iml" filepath="$PROJECT_DIR$/hello-ribbion/hello-ribbion.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-server/hello-server.iml" filepath="$PROJECT_DIR$/hello-server/hello-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-server1/hello-server1.iml" filepath="$PROJECT_DIR$/hello-server1/hello-server1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mysql-feign-server/mysql-feign-server.iml" filepath="$PROJECT_DIR$/mysql-feign-server/mysql-feign-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mysql-server/mysql-server.iml" filepath="$PROJECT_DIR$/mysql-server/mysql-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sql-server/sql-server.iml" filepath="$PROJECT_DIR$/sql-server/sql-server.iml" />
+    </modules>
+  </component>
+</project>

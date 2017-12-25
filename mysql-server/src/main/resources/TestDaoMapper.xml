@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.hisense.sql.dao.UserDao">
+    <resultMap id="ListTest" type="com.hisense.sql.entity.User" >
+        <result  column="userId" property="userId" />
+        <result column="userCode" property="userCode" />
+        <result column="age" property="age" />
+        <result column="mail" property="mail" />
+        <result column="phone" property="phone" />
+        <result column="groupId" property="groupId" />
+        <result column="createTime" property="createTime" />
+        <result column="createBy" property="createBy" />
+        <result column="modifiedTime" property="modifiedTime" />
+        <result column="modifiedBy" property="modifiedBy" />
+    </resultMap>
+
+    <!-- 所有列
+    <sql id="Column_list">
+        userId,
+        userCode,
+        age,
+        mail,
+        phone,
+        groupId,
+        createTime,
+        createBy,
+        modifiedTime,
+        modifiedBy
+    </sql>-->
+
+    <!--<select id="getInfosByuserCode" parameterType="java.lang.String" resultMap="ListTest">
+        select * from user WHERE userCode = #{parameter,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getInfosByage" parameterType="java.lang.Integer" resultMap="ListTest">
+        select * from user  WHERE age = #{parameter,jdbcType=INTEGER}
+    </select>
+
+    <select id="getInfosBymail" parameterType="java.lang.String" resultMap="ListTest">
+        select * from user WHERE mail = #{parameter,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getInfosByphone" parameterType="java.lang.String" resultMap="ListTest">
+        select * from user WHERE phone = #{parameter,jdbcType=VARCHAR}
+    </select>-->
+
+</mapper>
